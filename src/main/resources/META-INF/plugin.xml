@@ -1,0 +1,34 @@
+<idea-plugin>
+    <id>com.bruce.intellijPlugins.QuickAddAnnotation</id>
+    <name>QuickAddAnnotation</name>
+    <vendor email="gejun123456@gmail.com" url="https://github.com/gejun123456">Ge Jun</vendor>
+
+    <description><![CDATA[
+     Quick add annotation to java field like Jackson, NotNull, NotBlank ect.
+    ]]></description>
+
+    <depends>com.intellij.modules.java</depends>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <!-- uncomment to enable plugin in all products
+    <depends>com.intellij.modules.lang</depends>
+    -->
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+<!--        <completion.contributor language="JAVA" implementationClass="com.bruce.quickaddannotation.DateFormatCompletionContributor"/>-->
+    </extensions>
+
+    <actions>
+        <action class="com.bruce.quickaddannotation.AddAnnotationAction" text="Add Annotation To Field">
+            <add-to-group group-id="JavaGenerateGroup1"/>
+        </action>
+        <!-- Add your actions here -->
+<!--        <action id="com.bruce.quickaddannotation.DateHelperAction" class="com.bruce.quickaddannotation.DateHelperAction"-->
+<!--                text="Date Helper" description="Help in date time processing">-->
+<!--            <add-to-group group-id="MainToolBar" anchor="last"/>-->
+<!--            <add-to-group group-id="NavBarToolBar" anchor="last"/>-->
+<!--        </action>-->
+    </actions>
+</idea-plugin>
