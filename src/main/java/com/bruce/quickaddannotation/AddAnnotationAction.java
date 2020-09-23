@@ -13,4 +13,6 @@ public class AddAnnotationAction extends BaseGenerateAction {
     public AddAnnotationAction() {
         super(new AddAnnotationHandler());
     }
+
+
 }

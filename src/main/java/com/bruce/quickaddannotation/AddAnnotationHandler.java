@@ -7,16 +7,17 @@ import com.intellij.codeInsight.generation.OverrideImplementUtil;
 import com.intellij.codeInsight.generation.PsiElementClassMember;
 import com.intellij.codeInsight.generation.PsiFieldMember;
 import com.intellij.ide.util.MemberChooser;
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorModificationUtil;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiDocCommentOwner;
-import com.intellij.psi.PsiField;
-import com.intellij.psi.PsiFile;
+import com.intellij.psi.*;
+import com.intellij.psi.codeStyle.JavaCodeStyleManager;
+import com.intellij.util.ObjectUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -29,6 +30,7 @@ import java.util.List;
 public class AddAnnotationHandler implements CodeInsightActionHandler {
     private static final Logger LOG = Logger.getInstance("#AddAnnotationHandler");
 
+
     @Override
     public void invoke(@NotNull Project project, @NotNull Editor editor, @NotNull PsiFile file) {
         if (!EditorModificationUtil.checkModificationAllowed(editor)) return;
@@ -39,15 +41,36 @@ public class AddAnnotationHandler implements CodeInsightActionHandler {
         if (aClass == null || aClass.isInterface()) return; //?
         LOG.assertTrue(aClass.isValid());
         LOG.assertTrue(aClass.getContainingFile() != null);
-
         try {
             final ClassMember[] members = chooseOriginalMembers(aClass, project, editor);
             if (members == null) return;
 
+            ChooseAnnotationForm chooseAnnotationForm = new ChooseAnnotationForm(project, false);
+            boolean b = chooseAnnotationForm.showAndGet();
+            if (b) {
+                Object selectedItem = chooseAnnotationForm.comboBox1.getSelectedItem();
+                String s = ObjectUtils.tryCast(selectedItem, String.class);
+                for (ClassMember member : members) {
+                    if (member instanceof PsiFieldMember) {
+                        PsiFieldMember psiFieldMember = ObjectUtils.tryCast(member, PsiFieldMember.class);
+                        PsiField element = psiFieldMember.getElement();
+                        PsiAnnotation annotationFromText = PsiElementFactory.SERVICE.getInstance(project).createAnnotationFromText(s, element);
+                        WriteCommandAction.runWriteCommandAction(project, new Runnable() {
+                            @Override
+                            public void run() {
+                                element.getModifierList().addAfter(annotationFromText, null);
+                                JavaCodeStyleManager.getInstance(project).shortenClassReferences(element);
+                            }
+                        });
+                    }
+                }
 
+
+            }
         } finally {
 //            cleanup();
         }
+
     }
 
     private ClassMember[] chooseOriginalMembers(PsiClass aClass, Project project, Editor editor) {
@@ -119,6 +142,12 @@ public class AddAnnotationHandler implements CodeInsightActionHandler {
 
     private JPanel getHeaderPanel(Project project) {
         return null;
+    }
+
+
+    @Override
+    public boolean startInWriteAction() {
+        return false;
     }
 }
 
