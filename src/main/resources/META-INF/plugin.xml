@@ -18,6 +18,8 @@
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
 <!--        <completion.contributor language="JAVA" implementationClass="com.bruce.quickaddannotation.DateFormatCompletionContributor"/>-->
+        <applicationService serviceImplementation="com.bruce.quickaddannotation.AnnotationApplicationComponent"/>
+        <applicationConfigurable instance="com.bruce.quickaddannotation.MyConfiurable"/>
     </extensions>
 
     <actions>

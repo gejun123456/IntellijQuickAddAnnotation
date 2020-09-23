@@ -19,12 +19,12 @@ public class ChooseAnnotationForm extends DialogWrapper {
     public JPanel thePanel;
     public JComboBox comboBox1;
 
-    private static List<String> ANNOTATIONS = Lists.newArrayList("@com.fasterxml.jackson.annotation.JsonIgnore");
 
     protected ChooseAnnotationForm(@Nullable Project project, boolean canBeParent) {
         super(project, canBeParent);
         setTitle("Choose Annotation");
-        for (String annotation : ANNOTATIONS) {
+        PluginState state = AnnotationApplicationComponent.getInstance().getState();
+        for (String annotation : state.getAnnotationNames()) {
             comboBox1.addItem(annotation);
         }
         init();
