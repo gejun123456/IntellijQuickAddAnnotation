@@ -8,7 +8,10 @@ import java.util.List;
  * @author bruce ge 2020/9/23
  */
 public class PluginState {
-    private List<String> annotationNames = Lists.newArrayList("@com.fasterxml.jackson.annotation.JsonIgnore");
+    private List<String> annotationNames = Lists.newArrayList("@com.fasterxml.jackson.annotation.JsonIgnore"
+    ,"@javax.validation.constraints.NotNull","@javax.validation.constraints.NotBlank"
+    ,"@javax.validation.constraints.NotEmpty",
+            "@javax.validation.constraints.Email");
 
 
     public List<String> getAnnotationNames() {

@@ -1,6 +1,6 @@
 <idea-plugin>
     <id>com.bruce.intellijPlugins.QuickAddAnnotation</id>
-    <name>QuickAddAnnotation</name>
+    <name>Quick Add Annotation</name>
     <vendor email="gejun123456@gmail.com" url="https://github.com/gejun123456">Ge Jun</vendor>
 
     <description><![CDATA[
