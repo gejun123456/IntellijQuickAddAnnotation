@@ -22,8 +22,10 @@
         <applicationConfigurable instance="com.bruce.quickaddannotation.MyConfiurable"/>
     </extensions>
 
+    <idea-version since-build="183.0"/>
+
     <actions>
-        <action class="com.bruce.quickaddannotation.AddAnnotationAction" text="Add Annotation To Field">
+        <action class="com.bruce.quickaddannotation.AddAnnotationAction" text="Add Annotation Action">
             <add-to-group group-id="JavaGenerateGroup1"/>
         </action>
         <!-- Add your actions here -->
