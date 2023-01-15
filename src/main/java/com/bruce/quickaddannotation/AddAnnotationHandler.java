@@ -44,58 +44,58 @@ public class AddAnnotationHandler implements CodeInsightActionHandler {
         if (aClass == null || aClass.isInterface()) return; //?
         LOG.assertTrue(aClass.isValid());
         LOG.assertTrue(aClass.getContainingFile() != null);
-        String s1 = Messages.showInputDialog(project, "input your package name", "PackageName", null);
-        if(StringUtils.isBlank(s1)){
-            Messages.showErrorDialog(project,"package name shall not be empty","error");
-            return;
-        }
-        PsiPackage aPackage = JavaPsiFacade.getInstance(project).findPackage(s1);
-        //find all class in aPackage.
-        PsiClass[] classes = aPackage.getClasses();
-        WriteCommandAction.runWriteCommandAction(project, new Runnable() {
-            @Override
-            public void run() {
-                for (PsiClass psiClass : classes) {
-                    PsiModifierList modifierList = psiClass.getModifierList();
-                    //add annotation to psiClass
-                    PsiMethod[] methods = psiClass.getMethods();
-                    for (PsiMethod method : methods) {
-                        PsiModifierList modifierList1 = method.getModifierList();
-                        modifierList1.addAnnotation("com.baomidou.mybatisplus.annotation.InterceptorIgnore(tenantLine = \"true\")");
-                    }
-                    JavaCodeStyleManager.getInstance(project).shortenClassReferences(psiClass);
-                }
-            }
-        });
-//        try {
-//            final ClassMember[] members = chooseOriginalMembers(aClass, project, editor);
-//            if (members == null) return;
-//
-//            ChooseAnnotationForm chooseAnnotationForm = new ChooseAnnotationForm(project, false);
-//            boolean b = chooseAnnotationForm.showAndGet();
-//            if (b) {
-//                Object selectedItem = chooseAnnotationForm.comboBox1.getSelectedItem();
-//                String s = ObjectUtils.tryCast(selectedItem, String.class);
-//                for (ClassMember member : members) {
-//                    if (member instanceof PsiFieldMember) {
-//                        PsiFieldMember psiFieldMember = ObjectUtils.tryCast(member, PsiFieldMember.class);
-//                        PsiField element = psiFieldMember.getElement();
-//                        PsiAnnotation annotationFromText = PsiElementFactory.SERVICE.getInstance(project).createAnnotationFromText(s, element);
-//                        WriteCommandAction.runWriteCommandAction(project, new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                element.getModifierList().addAfter(annotationFromText, null);
-//                                JavaCodeStyleManager.getInstance(project).shortenClassReferences(element);
-//                            }
-//                        });
-//                    }
-//                }
-//
-//
-//            }
-//        } finally {
-////            cleanup();
+//        String s1 = Messages.showInputDialog(project, "input your package name", "PackageName", null);
+//        if(StringUtils.isBlank(s1)){
+//            Messages.showErrorDialog(project,"package name shall not be empty","error");
+//            return;
 //        }
+//        PsiPackage aPackage = JavaPsiFacade.getInstance(project).findPackage(s1);
+//        //find all class in aPackage.
+//        PsiClass[] classes = aPackage.getClasses();
+//        WriteCommandAction.runWriteCommandAction(project, new Runnable() {
+//            @Override
+//            public void run() {
+//                for (PsiClass psiClass : classes) {
+//                    PsiModifierList modifierList = psiClass.getModifierList();
+//                    //add annotation to psiClass
+//                    PsiMethod[] methods = psiClass.getMethods();
+//                    for (PsiMethod method : methods) {
+//                        PsiModifierList modifierList1 = method.getModifierList();
+//                        modifierList1.addAnnotation("com.baomidou.mybatisplus.annotation.InterceptorIgnore(tenantLine = \"true\")");
+//                    }
+//                    JavaCodeStyleManager.getInstance(project).shortenClassReferences(psiClass);
+//                }
+//            }
+//        });
+        try {
+            final ClassMember[] members = chooseOriginalMembers(aClass, project, editor);
+            if (members == null) return;
+
+            ChooseAnnotationForm chooseAnnotationForm = new ChooseAnnotationForm(project, false);
+            boolean b = chooseAnnotationForm.showAndGet();
+            if (b) {
+                Object selectedItem = chooseAnnotationForm.comboBox1.getSelectedItem();
+                String s = ObjectUtils.tryCast(selectedItem, String.class);
+                for (ClassMember member : members) {
+                    if (member instanceof PsiFieldMember) {
+                        PsiFieldMember psiFieldMember = ObjectUtils.tryCast(member, PsiFieldMember.class);
+                        PsiField element = psiFieldMember.getElement();
+                        PsiAnnotation annotationFromText = PsiElementFactory.SERVICE.getInstance(project).createAnnotationFromText(s, element);
+                        WriteCommandAction.runWriteCommandAction(project, new Runnable() {
+                            @Override
+                            public void run() {
+                                element.getModifierList().addAfter(annotationFromText, null);
+                                JavaCodeStyleManager.getInstance(project).shortenClassReferences(element);
+                            }
+                        });
+                    }
+                }
+
+
+            }
+        } finally {
+//            cleanup();
+        }
 
     }
 
